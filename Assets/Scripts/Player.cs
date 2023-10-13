@@ -3,56 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] public float movementSpeed = 10f;
+    [SerializeField] public float jumpSpeed = 5f;
+    protected abstract float GetMovementSpeed();
+    protected abstract float GetJumpSpeed();
 
-    Rigidbody rb;
 
-    private float moveSpeed = 10f;
-    public bool canMove = true;
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        //HandleMovement(); horizontal ve vertical alýnarak yeniden yapýldý
-        if(canMove)
-        {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            Vector3 movement = new Vector3(horizontal * Time.deltaTime * moveSpeed, vertical * Time.deltaTime * moveSpeed, 0f);
-            transform.position += movement;
-        }
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 movement = new Vector3(horizontal * Time.deltaTime * GetMovementSpeed(), vertical * Time.deltaTime * GetJumpSpeed(), 0f);
+        transform.position += movement;
     }
 
-    private void HandleMovement()
-    {
-        Vector3 movementDirectory = GetMovement();
-        transform.position += movementDirectory;
-    }
 
-    public Vector3 GetMovement()
-    {
-        Vector3 inputVector = new Vector3(0,0,0);
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputVector.y += 1;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputVector.y -= 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            inputVector.x -= 1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            inputVector.x += 1;
-        }
-        return inputVector.normalized;
-    }
 }
