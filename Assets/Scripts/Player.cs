@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,23 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public EventHandler JumpHandler;
 
     Rigidbody rb;
 
     private float moveSpeed = 10f;
     public bool canMove = true;
+
+    public static Player Instance { get; internal set; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("There is more than one Player instance");
+        }
+        Instance = this;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -27,6 +39,7 @@ public class Player : MonoBehaviour
             float vertical = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(horizontal * Time.deltaTime * moveSpeed, vertical * Time.deltaTime * moveSpeed, 0f);
             transform.position += movement;
+            JumpHandler?.Invoke(this, EventArgs.Empty);
         }
     }
 
