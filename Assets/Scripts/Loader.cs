@@ -8,7 +8,7 @@ public static class Loader
 {
     public enum Scene
     {
-        GameScene,
+        Level2Scene,
         LoadingScene
     }
     public static Scene targetScene;

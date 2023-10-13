@@ -19,7 +19,7 @@ public class MainMenuUI : MonoBehaviour
     {
         playButton.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.GameScene);
+            Loader.Load(Loader.Scene.Level2Scene);
         });
 
         quitButton.onClick.AddListener(() =>

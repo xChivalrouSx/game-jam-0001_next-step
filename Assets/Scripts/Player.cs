@@ -1,71 +1,100 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
     public EventHandler JumpHandler;
-
-    Rigidbody rb;
-
-    private float moveSpeed = 10f;
-    public bool canMove = true;
+    [SerializeField] public float movementSpeed = 10f;
+    [SerializeField] public float jumpSpeed = 5f;
+    private Rigidbody rb;
+    private Vector3 jumpVector;
+    private bool isGrounded;
 
     public static Player Instance { get; internal set; }
 
-    private void Awake()
+    protected abstract float GetMovementSpeed();
+    protected abstract float GetJumpSpeed();
+    protected abstract bool CanMove(Vector3 moveDirection, float moveDistance);
+    void Start()
     {
         if (Instance != null)
         {
             Debug.Log("There is more than one Player instance");
         }
         Instance = this;
-    }
-    void Start()
-    {
         rb = GetComponent<Rigidbody>();
-        
+        jumpVector = new Vector3(0f, 1f);
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        isGrounded = true;
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        isGrounded = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //HandleMovement(); horizontal ve vertical alýnarak yeniden yapýldý
-        if(canMove)
+        float horizontal = Input.GetAxis("Horizontal");
+        float movementDistance = GetMovementSpeed() * Time.deltaTime;
+        Vector3 movement = new Vector3(horizontal * movementDistance, 0f, 0f);
+        bool canMove = CanMove(movement, movementDistance);
+        if (!canMove)
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            Vector3 movement = new Vector3(horizontal * Time.deltaTime * moveSpeed, vertical * Time.deltaTime * moveSpeed, 0f);
+            Vector3 movementX = new Vector3(movement.x, 0f, 0f);
+            canMove = movement.x != 0 && CanMove(movementX, movementDistance);
+            if (canMove)
+            {
+                movement = movementX;
+            }
+            else
+            {
+                Vector3 movementZ = new Vector3(0, 0, movement.z);
+                canMove = movement.z != 0 && CanMove(movementZ, movementDistance);
+                if (canMove)
+                {
+                    movement = movementZ;
+                }
+            }
+        }
+        else
+        {
+        }
+        if (canMove)
+        {
             transform.position += movement;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.AddForce(jumpVector * GetJumpSpeed(), ForceMode.Impulse);
             JumpHandler?.Invoke(this, EventArgs.Empty);
         }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = false;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = true;
+            }
+        }
     }
 
-    private void HandleMovement()
-    {
-        Vector3 movementDirectory = GetMovement();
-        transform.position += movementDirectory;
-    }
 
-    public Vector3 GetMovement()
-    {
-        Vector3 inputVector = new Vector3(0,0,0);
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputVector.y += 1;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputVector.y -= 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            inputVector.x -= 1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            inputVector.x += 1;
-        }
-        return inputVector.normalized;
-    }
+
+
 }
