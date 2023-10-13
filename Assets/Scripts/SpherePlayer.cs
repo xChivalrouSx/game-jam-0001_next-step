@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         protected override bool CanMove(Vector3 moveDirection, float moveDistance)
         {
-            return !Physics.SphereCast(transform.position, .49f, moveDirection, out _, moveDistance);
+            return !Physics.SphereCast(transform.position + GetComponent<SphereCollider>().center, .49f, moveDirection, out _, moveDistance);
         }
 
     }
