@@ -6,6 +6,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField] public float movementSpeed = 10f;
     [SerializeField] public float jumpSpeed = 5f;
     private Rigidbody rb;
+    private Renderer renderer;
     private Vector3 jumpVector;
     private bool isGrounded;
 
@@ -15,12 +16,27 @@ public abstract class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        renderer = GetComponentInChildren<Renderer>();
         jumpVector = new Vector3(0f, 1f);
     }
 
     void OnCollisionStay(Collision collision)
     {
-        isGrounded = true;
+        Vector3 bottom = renderer.bounds.center;
+        bottom.y -= renderer.bounds.extents.y;
+        float minDist = float.PositiveInfinity;
+        float angle = 180f;
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            var contact = collision.GetContact(i);
+            var tempDist = Vector3.Distance(contact.point, bottom);
+            if (tempDist < minDist)
+            {
+                angle = Vector3.Angle(transform.up, contact.normal);
+            }
+        }
+        if (angle <= 45f) isGrounded = true;
+        else isGrounded = false;
     }
 
     void OnCollisionExit(Collision collision)
