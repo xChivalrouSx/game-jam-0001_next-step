@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public abstract class Player : MonoBehaviour
 {
     [SerializeField] public float movementSpeed = 10f;
     [SerializeField] public float jumpSpeed = 5f;
+
     protected abstract float GetMovementSpeed();
     protected abstract float GetJumpSpeed();
 
