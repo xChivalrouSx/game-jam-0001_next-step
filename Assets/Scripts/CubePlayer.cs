@@ -13,4 +13,9 @@ public class CubePlayer : Player
     {
         return movementSpeed;
     }
+
+    protected override bool CanMove(Vector3 moveDirection, float moveDistance)
+    {
+        return !Physics.BoxCast(transform.position, new Vector3(.4f,.4f,.4f), moveDirection, transform.rotation, moveDistance);
+    }
 }

@@ -17,5 +17,9 @@ namespace Assets.Scripts
             return movementSpeed;
         }
 
+        protected override bool CanMove(Vector3 moveDirection, float moveDistance)
+        {
+            return !Physics.SphereCast(transform.position, .4f, moveDirection, out _, moveDistance);
+        }
     }
 }

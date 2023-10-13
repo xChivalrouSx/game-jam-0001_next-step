@@ -10,6 +10,7 @@ public abstract class Player : MonoBehaviour
 
     protected abstract float GetMovementSpeed();
     protected abstract float GetJumpSpeed();
+    protected abstract bool CanMove(Vector3 moveDirection, float moveDistance);
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,8 +31,34 @@ public abstract class Player : MonoBehaviour
     void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        Vector3 movement = new Vector3(horizontal * Time.deltaTime * GetMovementSpeed(), 0f, 0f);
-        transform.position += movement;
+        float movementDistance = GetMovementSpeed() * Time.deltaTime;
+        Vector3 movement = new Vector3(horizontal * movementDistance, 0f, 0f);
+        bool canMove = CanMove(movement, movementDistance);
+        if (!canMove)
+        {
+            Vector3 movementX = new Vector3(movement.x, 0f, 0f);
+            canMove = movement.x != 0 && CanMove(movementX, movementDistance);
+            if (canMove)
+            {
+                movement = movementX;
+            }
+            else
+            {
+                Vector3 movementZ = new Vector3(0, 0, movement.z);
+                canMove = movement.z != 0 && CanMove(movementZ, movementDistance);
+                if (canMove)
+                {
+                    movement = movementZ;
+                }
+            }
+        }
+        else
+        {
+        }
+        if (canMove)
+        {
+            transform.position += movement;
+        }
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(jumpVector * GetJumpSpeed(), ForceMode.Impulse);
