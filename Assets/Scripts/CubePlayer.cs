@@ -16,6 +16,6 @@ public class CubePlayer : Player
 
     protected override bool CanMove(Vector3 moveDirection, float moveDistance)
     {
-        return !Physics.BoxCast(transform.position, new Vector3(.4f,.4f,.4f), moveDirection, transform.rotation, moveDistance);
+        return !Physics.BoxCast(transform.position, new Vector3(.49f,.49f,.49f), moveDirection, transform.rotation, moveDistance);
     }
 }
