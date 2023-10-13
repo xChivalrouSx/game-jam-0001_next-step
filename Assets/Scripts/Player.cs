@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public abstract class Player : MonoBehaviour
 {
@@ -62,6 +63,24 @@ public abstract class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(jumpVector * GetJumpSpeed(), ForceMode.Impulse);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = false;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = true;
+            }
         }
     }
 
