@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using static UnityEditor.Progress;
 
 public abstract class Player : MonoBehaviour
 {
+    public EventHandler JumpHandler;
     [SerializeField] public float movementSpeed = 10f;
     [SerializeField] public float jumpSpeed = 5f;
     private Rigidbody rb;
@@ -10,11 +12,18 @@ public abstract class Player : MonoBehaviour
     private Vector3 jumpVector;
     private bool isGrounded;
 
+    public static Player Instance { get; internal set; }
+
     protected abstract float GetMovementSpeed();
     protected abstract float GetJumpSpeed();
     protected abstract bool CanMove(Vector3 moveDirection, float moveDistance);
     void Start()
     {
+        if (Instance != null)
+        {
+            Debug.Log("There is more than one Player instance");
+        }
+        Instance = this;
         rb = GetComponent<Rigidbody>();
         renderer = GetComponentInChildren<Renderer>();
         jumpVector = new Vector3(0f, 1f);
@@ -79,6 +88,25 @@ public abstract class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(jumpVector * GetJumpSpeed(), ForceMode.Impulse);
+            JumpHandler?.Invoke(this, EventArgs.Empty);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = false;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            GameObject[] moveableObjects = GameObject.FindGameObjectsWithTag("Moveable");
+            foreach (var item in moveableObjects)
+            {
+                item.GetComponent<Rigidbody>().isKinematic = true;
+            }
         }
 
 
