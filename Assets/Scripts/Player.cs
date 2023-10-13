@@ -8,8 +8,6 @@ public abstract class Player : MonoBehaviour
     protected abstract float GetMovementSpeed();
     protected abstract float GetJumpSpeed();
 
-
-
     // Update is called once per frame
     void Update()
     {
