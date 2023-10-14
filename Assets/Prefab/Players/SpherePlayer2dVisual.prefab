@@ -246,6 +246,7 @@ Transform:
   m_Children:
   - {fileID: 8822138024923601515}
   - {fileID: 5029403439278773300}
+  - {fileID: 3087244560627373270}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &355213056625971200
@@ -260,8 +261,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab730d8e42539b4793b6cc4d7188b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameInput: {fileID: 4490991800221056967, guid: 824725bd66bbf124ca86c9e9211219b4, type: 3}
   movementSpeed: 10
   jumpSpeed: 7
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckPoint: {fileID: 3087244560627373270}
 --- !u!54 &5536970602052742586
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -271,7 +277,7 @@ Rigidbody:
   m_GameObject: {fileID: 4426938832666835218}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -331,3 +337,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &7348979541403198322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3087244560627373270}
+  m_Layer: 0
+  m_Name: GroundCheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3087244560627373270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7348979541403198322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2415409103296030451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
