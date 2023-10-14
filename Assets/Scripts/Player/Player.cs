@@ -6,13 +6,23 @@ public abstract class Player : MonoBehaviour
     public EventHandler JumpHandler;
 
     [SerializeField] private GameInput gameInput;
+
     [SerializeField] protected float movementSpeed;
+
     [SerializeField] protected float jumpSpeed;
+    [SerializeField] protected float wallJumpCooldown;
+
     [SerializeField] protected LayerMask groundLayer;
     [SerializeField] protected Transform groundCheckPoint;
 
+    [SerializeField] protected LayerMask wallLayer;
+    [SerializeField] protected Transform wallCheckPointLeft;
+    [SerializeField] protected Transform wallCheckPointRight;
+
     private Rigidbody rigidBody;
     private Animator animator;
+
+    private Vector3 movementDirection;
 
     public static Player Instance { get; internal set; }
 
@@ -44,22 +54,45 @@ public abstract class Player : MonoBehaviour
 
     void Update()
     {
-        Vector3 movementDirection = gameInput.GetMovementVectorNormalized();
-        rigidBody.velocity = new Vector3(movementDirection.x * GetMovementSpeed(), rigidBody.velocity.y, rigidBody.velocity.z);
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
+        movementDirection = gameInput.GetMovementVectorNormalized();
+
+        if (wallJumpCooldown > 0.2f)
         {
-            Jump();
+            rigidBody.velocity = new Vector3(movementDirection.x * GetMovementSpeed(), rigidBody.velocity.y, rigidBody.velocity.z);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Jump();
+            }
+        }
+        else
+        {
+            wallJumpCooldown += Time.deltaTime;
         }
     }
 
     private void Jump()
     {
-        rigidBody.velocity = new Vector3(rigidBody.velocity.x, GetJumpSpeed(), rigidBody.velocity.z);
+        if (IsGrounded())
+        {
+            rigidBody.velocity = new Vector3(rigidBody.velocity.x, GetJumpSpeed(), rigidBody.velocity.z);
+        }
+        else if (OnWall(out bool isRight) && !IsGrounded())
+        {
+            rigidBody.velocity = new Vector3((isRight ? -1 : 1) * 6, 10, rigidBody.velocity.z);
+            wallJumpCooldown = 0;
+        }
     }
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
         return Physics.CheckSphere(groundCheckPoint.position, .1f, groundLayer);
+    }
+
+    private bool OnWall(out bool isRight)
+    {
+        isRight = Physics.CheckSphere(wallCheckPointRight.position, .1f, wallLayer);
+        return Physics.CheckSphere(wallCheckPointLeft.position, .1f, wallLayer) || isRight;
     }
 
 
