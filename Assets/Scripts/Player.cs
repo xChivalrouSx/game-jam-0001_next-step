@@ -17,7 +17,7 @@ public abstract class Player : MonoBehaviour
     protected abstract float GetMovementSpeed();
     protected abstract float GetJumpSpeed();
     protected abstract bool CanMove(Vector3 moveDirection, float moveDistance);
-    void Start()
+    void Awake()
     {
         if (Instance != null)
         {
