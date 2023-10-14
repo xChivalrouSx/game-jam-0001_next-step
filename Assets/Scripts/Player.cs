@@ -11,6 +11,7 @@ public abstract class Player : MonoBehaviour
     private Renderer renderer;
     private Vector3 jumpVector;
     private bool isGrounded;
+    private Animator animator;
 
     public static Player Instance { get; internal set; }
 
@@ -27,6 +28,17 @@ public abstract class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         renderer = GetComponentInChildren<Renderer>();
         jumpVector = new Vector3(0f, 1f);
+        animator = GetComponent<Animator>();
+    }
+
+    public void InAnimation()
+    {
+        animator.SetTrigger("In");
+    }
+
+    public void OutAnimation()
+    {
+        animator.SetTrigger("Out");
     }
 
     void OnCollisionStay(Collision collision)
