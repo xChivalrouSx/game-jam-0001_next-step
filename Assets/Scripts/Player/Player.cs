@@ -22,6 +22,8 @@ public abstract class Player : MonoBehaviour
     private Rigidbody rigidBody;
     private Animator animator;
 
+    private Change change;
+
     private Vector3 movementDirection;
 
     public static Player Instance { get; internal set; }
@@ -30,7 +32,7 @@ public abstract class Player : MonoBehaviour
 
     protected abstract float GetJumpSpeed();
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null)
         {
@@ -40,6 +42,11 @@ public abstract class Player : MonoBehaviour
 
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        change = GameObject.FindFirstObjectByType<Change>();
     }
 
     public void InAnimation()
@@ -58,7 +65,9 @@ public abstract class Player : MonoBehaviour
 
         if (wallJumpCooldown > 0.2f)
         {
-            rigidBody.velocity = new Vector3(movementDirection.x * GetMovementSpeed(), rigidBody.velocity.y, rigidBody.velocity.z);
+            Debug.Log(movementDirection);
+            float velocityZ = change.Is2D ? rigidBody.velocity.z : movementDirection.z * GetMovementSpeed();
+            rigidBody.velocity = new Vector3(movementDirection.x * GetMovementSpeed(), rigidBody.velocity.y, velocityZ);
 
             if (Input.GetKeyDown(KeyCode.Space))
             {

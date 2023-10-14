@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2287888164000628909}
   m_Layer: 0
   m_Name: CubePlayerTransparent
-  m_TagString: Untagged
+  m_TagString: Transparent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 3616646620005344884}
   m_Layer: 0
   m_Name: CubePlayerVisual
-  m_TagString: Untagged
+  m_TagString: Visual
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

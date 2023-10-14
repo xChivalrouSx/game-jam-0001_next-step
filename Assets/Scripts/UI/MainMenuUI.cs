@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
@@ -11,12 +8,10 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] Button settingButton;
     [SerializeField] GameObject settingCanvas;
 
-    private void Start()
-    {
-        settingCanvas.SetActive(false);
-    }
     void Awake()
     {
+        settingCanvas.SetActive(false);
+
         playButton.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.Level2Scene);

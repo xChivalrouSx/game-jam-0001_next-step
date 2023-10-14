@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -7,7 +5,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip jumpAudioClip;
     private void Start()
     {
-        Player.Instance.JumpHandler += Player_Jump; 
+        Player.Instance.JumpHandler += Player_Jump;
     }
 
     private void Player_Jump(object sender, System.EventArgs e)

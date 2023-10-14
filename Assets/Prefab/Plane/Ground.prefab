@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7458406785236095361}
   m_Layer: 6
   m_Name: PlaneVisual
-  m_TagString: Untagged
+  m_TagString: Visual
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6409136720225294652}
   m_Layer: 6
   m_Name: PlaneTransparent
-  m_TagString: Untagged
+  m_TagString: Transparent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

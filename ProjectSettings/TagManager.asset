@@ -7,6 +7,8 @@ TagManager:
   - Moveable
   - Ground
   - Wall
+  - Visual
+  - Transparent
   layers:
   - Default
   - TransparentFX
