@@ -17,6 +17,7 @@ public abstract class Player : MonoBehaviour
     public static Player Instance { get; internal set; }
 
     public abstract float GetMovementSpeed();
+
     protected abstract float GetJumpSpeed();
 
     void Awake()
