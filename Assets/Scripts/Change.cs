@@ -12,6 +12,7 @@ public class Change : MonoBehaviour
 
     public GameObject SpherePlayer;
     public GameObject CubePlayer;
+    public ReloadScenePlaneManager reloadScenePlaneManager;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.C) && canChange)
@@ -42,8 +43,10 @@ public class Change : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         GameObject obj = Instantiate(player, position, Quaternion.identity);
-        obj.GetComponent<CubePlayer>().InAnimation();
+        CubePlayer _player = obj.GetComponent<CubePlayer>();
+        _player.InAnimation();
         VirtualCamera.Follow = obj.transform;
+        reloadScenePlaneManager._player = _player;
         canChange = true;
     }
 
@@ -51,8 +54,10 @@ public class Change : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         GameObject obj = Instantiate(player, position, Quaternion.identity);
-        obj.GetComponent<SpherePlayer>().InAnimation();
+        SpherePlayer _player = obj.GetComponent<SpherePlayer>();
+        _player.InAnimation();
         VirtualCamera.Follow = obj.transform;
+        reloadScenePlaneManager._player = _player;
         canChange = true;
     }
 
