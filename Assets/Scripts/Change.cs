@@ -1,10 +1,7 @@
 using Assets.Scripts;
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Change : MonoBehaviour
 {
@@ -17,31 +14,32 @@ public class Change : MonoBehaviour
     public GameObject CubePlayer;
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C) && canChange) {
+        if (Input.GetKeyDown(KeyCode.C) && canChange)
+        {
             canChange = false;
             GameObject liveObject = GameObject.FindGameObjectWithTag("Player");
-            Vector3 position = new Vector3( liveObject.transform.position.x, liveObject.transform.position.y, liveObject.transform.position.z);
+            Vector3 position = new Vector3(liveObject.transform.position.x, liveObject.transform.position.y, liveObject.transform.position.z);
             if (isSphere)
             {
                 liveObject.GetComponent<SpherePlayer>().OutAnimation();
-                Destroy(liveObject, 1f);
+                Destroy(liveObject, 0.9f);
                 StartCoroutine(SpawnNewCubePlayer(CubePlayer, position));
                 isSphere = false;
-            } else
+            }
+            else
             {
                 liveObject.GetComponent<CubePlayer>().OutAnimation();
-                Destroy(liveObject, 1f);
+                Destroy(liveObject, 0.9f);
                 StartCoroutine(SpawnNewSpherePlayer(SpherePlayer, position));
                 isSphere = true;
             }
-            
+
         }
-        
+
     }
 
     IEnumerator SpawnNewCubePlayer(GameObject player, Vector3 position)
     {
-
         yield return new WaitForSeconds(1f);
         GameObject obj = Instantiate(player, position, Quaternion.identity);
         obj.GetComponent<CubePlayer>().InAnimation();
@@ -56,7 +54,6 @@ public class Change : MonoBehaviour
         obj.GetComponent<SpherePlayer>().InAnimation();
         VirtualCamera.Follow = obj.transform;
         canChange = true;
-
     }
 
 
