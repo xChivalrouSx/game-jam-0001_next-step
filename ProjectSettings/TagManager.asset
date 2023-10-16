@@ -11,6 +11,7 @@ TagManager:
   - Transparent
   - ReloadPlayer
   - Win
+  - 3D_Full_Block
   layers:
   - Default
   - TransparentFX

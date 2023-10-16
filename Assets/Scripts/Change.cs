@@ -63,6 +63,14 @@ public class Change : MonoBehaviour
         GameObject livePlayerGameObject = GameObject.FindGameObjectWithTag("Player");
         livePlayerGameObject.transform.position = new Vector3(livePlayerGameObject.transform.position.x, livePlayerGameObject.transform.position.y, 0);
 
+        string FullBlock3dString = "3D_Full_Block";
+        List<GameObject> fullBlock3DGameObjects = GameObject.FindGameObjectsWithTag(FullBlock3dString).ToList();
+        foreach (GameObject item in fullBlock3DGameObjects)
+        {
+            float positionZ = Is2D ? item.transform.position.z - 1f : item.transform.position.z + 1f;
+            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, positionZ);
+        }
+
         Is2D = !Is2D;
         canChange = true;
     }
