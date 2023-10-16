@@ -4,17 +4,16 @@ public class WinTrigger : MonoBehaviour
 {
     [SerializeField] private GameObject winUI;
 
-    private void Start()
+    private void Awake()
     {
-        //winUI = GameObject.FindFirstObjectByType<WinUI>();
-        //winUI.SetActive(false);
+        winUI.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Contains("Player") && !winUI.activeSelf)
+        if (other.tag.Contains("Player") && !winUI.activeInHierarchy)
         {
-            winUI.SetActive(true);
+            winUI.gameObject.SetActive(true);
         }
     }
 }

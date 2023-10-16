@@ -121,6 +121,10 @@ public class Change : MonoBehaviour
         yield return new WaitForSeconds(1f);
         playerToActive.transform.position = playerToPassive.transform.position;
         playerToPassive.gameObject.SetActive(false);
+
+        playerToActive.GetComponent<Rigidbody>().constraints = Is2D ?
+            RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.FreezeRotation;
+
         playerToActive.gameObject.SetActive(true);
         playerToActive.InAnimation();
         virtualCamera.Follow = playerToActive.transform;
