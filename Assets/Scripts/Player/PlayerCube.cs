@@ -1,4 +1,4 @@
-public class CubePlayer : Player
+public class PlayerCube : Player
 {
     protected override float GetJumpSpeed()
     {

@@ -8,17 +8,14 @@ using UnityEngine;
 public class Change : MonoBehaviour
 {
 
+    [SerializeField] private GameObject playerGameObject;
     [SerializeField] private Material transparentMaterial;
-    [SerializeField] public CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
     private CinemachineTransposer cinemachineTransposer;
 
     public bool Is2D { get; set; }
     private bool isSphere = true;
     private bool canChange = true;
-
-    public GameObject SpherePlayer;
-    public GameObject CubePlayer;
-    public ReloadScenePlaneManager reloadScenePlaneManager;
 
     private void Awake()
     {
@@ -43,7 +40,6 @@ public class Change : MonoBehaviour
         canChange = false;
         string visualString = "Visual";
         string transparentString = "Transparent";
-        List<GameObject> visualGameObjects = GameObject.FindGameObjectsWithTag(visualString).ToList();
         List<GameObject> transparentGameObjects = GameObject.FindGameObjectsWithTag(transparentString).ToList();
 
         foreach (GameObject item in transparentGameObjects)
@@ -53,6 +49,12 @@ public class Change : MonoBehaviour
             Material tmpMaterial = visualTransform.gameObject.GetComponent<MeshRenderer>().material;
             item.GetComponent<MeshRenderer>().material = !Is2D ? transparentMaterial : tmpMaterial;
             visualTransform.gameObject.SetActive(!Is2D);
+
+            if (item.transform.parent.tag.Equals("Player"))
+            {
+                item.GetComponentInParent<Rigidbody>().constraints = Is2D ?
+                    RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+            }
         }
 
         cinemachineTransposer.m_FollowOffset = Is2D ? new Vector3(-1, 4.5f, -8) : new Vector3(0, 0, -10);
@@ -68,45 +70,53 @@ public class Change : MonoBehaviour
     private void TransformPlayerCharacter()
     {
         canChange = false;
-        GameObject liveObject = GameObject.FindGameObjectWithTag("Player");
-        Vector3 position = new Vector3(liveObject.transform.position.x, liveObject.transform.position.y, liveObject.transform.position.z);
+        PlayerCube playerCube = playerGameObject.transform.Find("PlayerCube").gameObject.GetComponent<PlayerCube>();
+        PlayerSphere playerSphere = playerGameObject.transform.Find("PlayerSphere").gameObject.GetComponent<PlayerSphere>();
+
+        if (Is2D)
+        {
+            playerCube.transform.Find("CubePlayerTransparent").gameObject.GetComponent<MeshRenderer>().material = transparentMaterial;
+            playerCube.transform.Find("CubePlayerVisual").gameObject.SetActive(true);
+
+            playerSphere.transform.Find("SpherePlayerTransparent").gameObject.GetComponent<MeshRenderer>().material = transparentMaterial;
+            playerSphere.transform.Find("SpherePlayerVisual").gameObject.SetActive(true);
+        }
+        else
+        {
+            GameObject cubeVisualGameObject = playerCube.transform.Find("CubePlayerVisual").gameObject;
+            Material cubeVisualMaterial = cubeVisualGameObject.GetComponent<MeshRenderer>().material;
+            playerCube.transform.Find("CubePlayerTransparent").gameObject.GetComponent<MeshRenderer>().material = cubeVisualMaterial;
+            cubeVisualGameObject.SetActive(false);
+
+            GameObject sphereVisualGameObject = playerSphere.transform.Find("SpherePlayerVisual").gameObject;
+            Material sphereVisualMaterial = sphereVisualGameObject.GetComponent<MeshRenderer>().material;
+            playerSphere.transform.Find("SpherePlayerTransparent").gameObject.GetComponent<MeshRenderer>().material = sphereVisualMaterial;
+            sphereVisualGameObject.SetActive(false);
+        }
+
         if (isSphere)
         {
-            liveObject.GetComponent<SpherePlayer>().OutAnimation();
-            Destroy(liveObject, 0.9f);
-            StartCoroutine(SpawnNewCubePlayer(CubePlayer, position));
+            playerSphere.OutAnimation();
+            StartCoroutine(SpawnNewCubePlayer(playerSphere, playerCube));
             isSphere = false;
         }
         else
         {
-            liveObject.GetComponent<CubePlayer>().OutAnimation();
-            Destroy(liveObject, 0.9f);
-            StartCoroutine(SpawnNewSpherePlayer(SpherePlayer, position));
+            playerCube.OutAnimation();
+            StartCoroutine(SpawnNewCubePlayer(playerCube, playerSphere));
             isSphere = true;
         }
     }
 
-    IEnumerator SpawnNewCubePlayer(GameObject player, Vector3 position)
+    private IEnumerator SpawnNewCubePlayer(Player playerToPassive, Player playerToActive)
     {
         yield return new WaitForSeconds(1f);
-        GameObject obj = Instantiate(player, position, Quaternion.identity);
-        CubePlayer _player = obj.GetComponent<CubePlayer>();
-        _player.InAnimation();
-        virtualCamera.Follow = obj.transform;
-        reloadScenePlaneManager._player = _player;
+        playerToActive.transform.position = playerToPassive.transform.position;
+        playerToPassive.gameObject.SetActive(false);
+        playerToActive.gameObject.SetActive(true);
+        playerToActive.InAnimation();
+        virtualCamera.Follow = playerToActive.transform;
         canChange = true;
     }
-
-    IEnumerator SpawnNewSpherePlayer(GameObject player, Vector3 position)
-    {
-        yield return new WaitForSeconds(1f);
-        GameObject obj = Instantiate(player, position, Quaternion.identity);
-        SpherePlayer _player = obj.GetComponent<SpherePlayer>();
-        _player.InAnimation();
-        virtualCamera.Follow = obj.transform;
-        reloadScenePlaneManager._player = _player;
-        canChange = true;
-    }
-
 
 }

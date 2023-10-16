@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - Visual
   - Transparent
+  - ReloadPlayer
+  - Win
   layers:
   - Default
   - TransparentFX

@@ -24,8 +24,6 @@ public abstract class Player : MonoBehaviour
 
     private Change change;
 
-    private Vector3 movementDirection;
-
     public static Player Instance { get; internal set; }
 
     public abstract float GetMovementSpeed();
@@ -61,11 +59,10 @@ public abstract class Player : MonoBehaviour
 
     void Update()
     {
-        movementDirection = gameInput.GetMovementVectorNormalized();
+        Vector3 movementDirection = gameInput.GetMovementVectorNormalized();
 
         if (wallJumpCooldown > 0.2f)
         {
-            Debug.Log(movementDirection);
             float velocityZ = change.Is2D ? rigidBody.velocity.z : movementDirection.z * GetMovementSpeed();
             rigidBody.velocity = new Vector3(movementDirection.x * GetMovementSpeed(), rigidBody.velocity.y, velocityZ);
 

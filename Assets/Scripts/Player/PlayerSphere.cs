@@ -1,6 +1,6 @@
 namespace Assets.Scripts
 {
-    public class SpherePlayer : Player
+    public class PlayerSphere : Player
     {
         protected override float GetJumpSpeed()
         {

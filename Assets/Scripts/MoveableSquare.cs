@@ -14,7 +14,7 @@ public class MoveableSquare : MonoBehaviour
             //GetComponent<Rigidbody>().AddForce(direction * 100, ForceMode.Impulse);
 
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-            var test = playerObject.ConvertTo<SpherePlayer>();
+            var test = playerObject.ConvertTo<PlayerSphere>();
             float horizontal = Input.GetAxis("Horizontal");
             float movementDistance = test.GetMovementSpeed() * Time.deltaTime;
             Vector3 movement = new Vector3(horizontal * movementDistance, 0f, 0f);
