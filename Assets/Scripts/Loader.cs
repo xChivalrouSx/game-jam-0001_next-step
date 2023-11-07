@@ -1,13 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class Loader
 {
     public enum Scene
     {
+        Level1Scene,
         Level2Scene,
         LoadingScene
     }
