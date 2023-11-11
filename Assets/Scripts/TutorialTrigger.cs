@@ -7,6 +7,7 @@ public class TutorialTriggerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI messageBox;
     [SerializeField] private KeyCode keyToWait;
     [SerializeField] private string pressToWhat;
+    [SerializeField] private string customMessage;
 
     private bool isShownAlready;
 
@@ -18,7 +19,7 @@ public class TutorialTriggerScript : MonoBehaviour
 
     private void Update()
     {
-        if (gameObject.activeSelf && Input.GetKey(keyToWait))
+        if (gameObject.activeSelf && (Input.GetKey(keyToWait) || (KeyCode.RightArrow == keyToWait && Input.GetKey(KeyCode.D))))
         {
             Hide();
             Time.timeScale = 1f;
@@ -27,10 +28,9 @@ public class TutorialTriggerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("test");
         if (other.tag.Contains("Player") && !isShownAlready)
         {
-            messageBox.text = "Press '" + keyToWait.ToString() + "' to " + pressToWhat + "!..";
+            messageBox.text = string.IsNullOrWhiteSpace(customMessage) ? "Press '" + keyToWait.ToString() + "' to " + pressToWhat + "!.." : customMessage;
             isShownAlready = true;
             Show();
             Time.timeScale = 0f;
