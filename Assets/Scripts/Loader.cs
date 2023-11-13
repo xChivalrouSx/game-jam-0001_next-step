@@ -4,11 +4,12 @@ public static class Loader
 {
     public enum Scene
     {
-        Level1Scene,
-        Level2Scene,
-        LoadingScene
+        LoadingScene,
+        Level_1,
+        Level_2
     }
-    public static Scene targetScene;
+
+    private static Scene targetScene;
 
     public static void LoaderCallBack()
     {

@@ -83,7 +83,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6265670182571689021, guid: f1d805767b7945f4498f0e2ba6085ad1, type: 3}
       propertyPath: m_Name
-      value: CubePlayer
+      value: PlayerCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 6265670182571689021, guid: f1d805767b7945f4498f0e2ba6085ad1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -145,7 +149,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4426938832666835218, guid: e1d01d62ba9eac94883b0b2560f84eb7, type: 3}
       propertyPath: m_Name
-      value: SpherePlayer
+      value: PlayerSphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 4426938832666835218, guid: e1d01d62ba9eac94883b0b2560f84eb7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
