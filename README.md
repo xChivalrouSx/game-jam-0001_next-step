@@ -1,9 +1,16 @@
 # game-jam-0001_next-step
-My first game jam ever.
+My first game jam ever. 
+
+**With:**
+- [Yiğit](https://github.com/yigit26)
+- [Elif](https://github.com/eelfgnc)
+- [Sina](https://github.com/xaxe-sk)
 
 ---
 
 **Game Jam Topic:** Transformation
+
+**Note:** After jam, I made some little changes.
 
 ---
 
